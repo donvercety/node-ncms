@@ -1,51 +1,42 @@
 #include <node.h>
-#include <pthread.h>
+#include <uv.h>
 #include <unistd.h>
 
 namespace demo {
 
-	using v8::Context;
 	using v8::Exception;
 	using v8::Function;
 	using v8::FunctionCallbackInfo;
-	using v8::FunctionTemplate;
 	using v8::Isolate;
 	using v8::Local;
 	using v8::Number;
 	using v8::Object;
-	using v8::Persistent;
 	using v8::String;
 	using v8::Value;
+
+	uv_loop_t *loop;
 
 	struct Data {
 		Local<Number> num;
 		Local<Function> cb;
-	};	
+	};
 
-	void* threadFun(void *args) {
-		// Isolate *isolate = Isolate::GetCurrent(); // nestava
-		// struct Data *Arguments = (struct Data *)args;
-
-
-		Isolate* isolate = (Isolate *) args;
-
+	void threadMaster(uv_work_t *req) {
 		sleep(5);
-		printf("isolate %p\n", isolate);
+	}
 
-		isolate->ThrowException(Exception::TypeError(
-				String::NewFromUtf8(isolate, "Wrong number of arguments")));
+	void finish(uv_work_t *req, int status) {
+		Isolate *isolate = Isolate::GetCurrent();
 
-		// printf("%d\n", Arguments->num->Uint32Value());
+		struct Data *Arguments = (struct Data *)req->data;
+		printf("FINISHED %p\n", isolate);
 
-		// Local<Function> cb = Local<Function>::Cast(Arguments->cb);
 
-		// how many arguments will be returned
-		// const unsigned argc = 1;
-		// Local<Value> argv[argc] = { String::NewFromUtf8(isolate, "hello world") };
-		// cb->Call(Null(isolate), argc, argv);
+		const unsigned argc = 1;
+		Local<Value> argv[argc] = { String::NewFromUtf8(isolate, "hello world") };
+		Arguments->cb->Call(Null(isolate), argc, argv);
 
-		// delete Arguments;
-		return NULL;
+		delete Arguments;
 	}
 
 	void RunCallback(const FunctionCallbackInfo<Value>& args) {
@@ -69,16 +60,18 @@ namespace demo {
 
 		struct Data *Arguments = new Data();
 
-		Arguments->num = Number::New(isolate, args[0]->NumberValue());
-		Arguments->cb  = Local<Function>::Cast(args[1]);
+		Arguments->num  = Number::New(isolate, args[0]->NumberValue());
+		Arguments->cb = Local<Function>::Cast(args[1]);
 
-		const unsigned argc = 1;
-		Local<Value> argv[argc] = { String::NewFromUtf8(isolate, "hello world") };
-		Arguments->cb->Call(Null(isolate), argc, argv);
+		loop = uv_default_loop();
+		uv_work_t req;
 
-		pthread_t tid;
-		pthread_create(&tid, NULL, threadFun, isolate);
-		// pthread_join(tid, NULL);
+		req.data = Arguments;
+
+		uv_queue_work(loop, &req, threadMaster, finish);
+		// uv_thread_join(&hare_id); // blocks async
+		
+		uv_run(loop, UV_RUN_DEFAULT);
 	}
 
 	void Init(Local<Object> exports, Local<Object> module) {

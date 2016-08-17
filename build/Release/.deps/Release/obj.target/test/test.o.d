@@ -4,10 +4,22 @@ Release/obj.target/test/test.o: ../test.cpp \
  /home/lubo/.node-gyp/6.3.1/include/node/v8.h \
  /home/lubo/.node-gyp/6.3.1/include/node/v8-version.h \
  /home/lubo/.node-gyp/6.3.1/include/node/v8config.h \
- /home/lubo/.node-gyp/6.3.1/include/node/node_version.h
+ /home/lubo/.node-gyp/6.3.1/include/node/node_version.h \
+ /home/lubo/.node-gyp/6.3.1/include/node/uv.h \
+ /home/lubo/.node-gyp/6.3.1/include/node/uv-errno.h \
+ /home/lubo/.node-gyp/6.3.1/include/node/uv-version.h \
+ /home/lubo/.node-gyp/6.3.1/include/node/uv-unix.h \
+ /home/lubo/.node-gyp/6.3.1/include/node/uv-threadpool.h \
+ /home/lubo/.node-gyp/6.3.1/include/node/uv-linux.h
 ../test.cpp:
 /home/lubo/.node-gyp/6.3.1/include/node/node.h:
 /home/lubo/.node-gyp/6.3.1/include/node/v8.h:
 /home/lubo/.node-gyp/6.3.1/include/node/v8-version.h:
 /home/lubo/.node-gyp/6.3.1/include/node/v8config.h:
 /home/lubo/.node-gyp/6.3.1/include/node/node_version.h:
+/home/lubo/.node-gyp/6.3.1/include/node/uv.h:
+/home/lubo/.node-gyp/6.3.1/include/node/uv-errno.h:
+/home/lubo/.node-gyp/6.3.1/include/node/uv-version.h:
+/home/lubo/.node-gyp/6.3.1/include/node/uv-unix.h:
+/home/lubo/.node-gyp/6.3.1/include/node/uv-threadpool.h:
+/home/lubo/.node-gyp/6.3.1/include/node/uv-linux.h:
