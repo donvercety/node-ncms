@@ -1,8 +1,8 @@
 {
 	"targets": [
 		{
-			"target_name": "test",
-			"sources": [ "test.cpp" ]
+			"target_name": "ncms",
+			"sources": [ "ncms.cpp" ]
 		}
 	]
 }

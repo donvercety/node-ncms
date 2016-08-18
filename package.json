@@ -1,5 +1,5 @@
 {
-	"name": "test",
+	"name": "ncms",
 	"version": "1.0.0",
-	"main": "./build/Release/test"
+	"main": "./build/Release/ncms"
 }
